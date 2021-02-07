@@ -32,14 +32,14 @@ public class LoginActivity extends AppCompatActivity {
 
 	loginButton = findViewById(R.id.loginButton);
 
-	usernameInput.addTextChangedListener(emptyInputTextWatcher(usernameInput, textUsernameLayout));
-	passwordInput.addTextChangedListener(emptyInputTextWatcher(passwordInput, textPasswordLayout));
+	usernameInput.addTextChangedListener(emptyInputTextWatcher(textUsernameLayout));
+	passwordInput.addTextChangedListener(emptyInputTextWatcher(textPasswordLayout));
 
 
   }
 
 
-  private TextWatcher emptyInputTextWatcher(TextInputEditText processingField, TextInputLayout processingFieldParentLayout) {
+  private TextWatcher emptyInputTextWatcher(TextInputLayout processingFieldParentLayout) {
 	return new TextWatcher() {
 	  @Override
 	  public void beforeTextChanged(CharSequence s, int start, int count, int after) {
