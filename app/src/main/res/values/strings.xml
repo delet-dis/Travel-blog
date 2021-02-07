@@ -1,6 +1,9 @@
 <resources>
   <string name="appName">Travel blog</string>
-  <string name="loginInputHint">Username</string>
+  <string name="usernameInputHint">Username</string>
   <string name="passwordInputHint">Password</string>
   <string name="loginButtonHint">Login</string>
+  <string name="usernameInputEmptyError">Username must not be empty</string>
+  <string name="passwordInputEmptyError">Password must not be empty</string>
+  <string name="fieldEmptyError">Field must not be empty</string>
 </resources>
