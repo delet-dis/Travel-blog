@@ -1,6 +1,9 @@
 package com.delet_dis.travelblog;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -90,17 +93,34 @@ public class LoginActivity extends AppCompatActivity {
   }
 
   private void onLoginClicked() {
-	if (usernameInput.getText().toString().isEmpty() || passwordInput.getText().toString().isEmpty()) {
+	if (isLoginFieldsAreEmpty()) {
 	  showLoginErrorDialog();
 	} else {
 	  performLogin();
 	}
   }
 
-  private void performLogin() {
+  private boolean isLoginFieldsAreEmpty() {
+	return usernameInput.getText().toString().isEmpty() || passwordInput.getText().toString().isEmpty();
+  }
+
+  private void disableLoginFields() {
 	textUsernameLayout.setEnabled(false);
 	textPasswordLayout.setEnabled(false);
+  }
+
+  private void performLogin() {
+	disableLoginFields();
+
 	loginButton.setVisibility(View.INVISIBLE);
 	loginProgressBar.setVisibility(View.VISIBLE);
+
+	Handler handler = new Handler(Looper.getMainLooper());
+	handler.postDelayed(this::startMainActivity, 2000);
+  }
+
+  private void startMainActivity() {
+	Intent intent = new Intent(this, MainActivity.class);
+	startActivity(intent);
   }
 }
