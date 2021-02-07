@@ -3,6 +3,7 @@ package com.delet_dis.travelblog;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 
@@ -91,6 +92,15 @@ public class LoginActivity extends AppCompatActivity {
   private void onLoginClicked() {
 	if (usernameInput.getText().toString().isEmpty() || passwordInput.getText().toString().isEmpty()) {
 	  showLoginErrorDialog();
+	} else {
+	  performLogin();
 	}
+  }
+
+  private void performLogin() {
+	textUsernameLayout.setEnabled(false);
+	textPasswordLayout.setEnabled(false);
+	loginButton.setVisibility(View.INVISIBLE);
+	loginProgressBar.setVisibility(View.VISIBLE);
   }
 }
