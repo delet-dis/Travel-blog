@@ -5,6 +5,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.Button;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.textfield.TextInputEditText;
@@ -16,7 +17,6 @@ public class LoginActivity extends AppCompatActivity {
   private TextInputEditText usernameInput;
   private TextInputLayout textPasswordLayout;
   private TextInputEditText passwordInput;
-
   private Button loginButton;
 
   @Override
@@ -35,7 +35,7 @@ public class LoginActivity extends AppCompatActivity {
 	usernameInput.addTextChangedListener(emptyInputTextWatcher(textUsernameLayout));
 	passwordInput.addTextChangedListener(emptyInputTextWatcher(textPasswordLayout));
 
-
+	loginButton.setOnClickListener(v -> onLoginClicked());
   }
 
 
@@ -62,5 +62,19 @@ public class LoginActivity extends AppCompatActivity {
 
 	  }
 	};
+  }
+
+  private void showLoginErrorDialog() {
+	new AlertDialog.Builder(this)
+			.setTitle(getResources().getText(R.string.loginFailedTitleAlertDialogError))
+			.setMessage(getResources().getText(R.string.loginFailedMessageAlertDialogError))
+			.setPositiveButton(getResources().getText(R.string.positiveOkText), ((dialog, which) -> dialog.dismiss()))
+			.show();
+  }
+
+  private void onLoginClicked() {
+	if (usernameInput.getText().toString().isEmpty() || passwordInput.getText().toString().isEmpty()) {
+	  showLoginErrorDialog();
+	}
   }
 }

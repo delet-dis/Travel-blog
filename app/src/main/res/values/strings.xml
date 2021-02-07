@@ -3,7 +3,8 @@
   <string name="usernameInputHint">Username</string>
   <string name="passwordInputHint">Password</string>
   <string name="loginButtonHint">Login</string>
-  <string name="usernameInputEmptyError">Username must not be empty</string>
-  <string name="passwordInputEmptyError">Password must not be empty</string>
   <string name="fieldEmptyError">Field must not be empty</string>
+  <string name="loginFailedTitleAlertDialogError">Login failed</string>
+  <string name="loginFailedMessageAlertDialogError">"Username or password is not correct. Please try again.</string>
+  <string name="positiveOkText">OK</string>
 </resources>
