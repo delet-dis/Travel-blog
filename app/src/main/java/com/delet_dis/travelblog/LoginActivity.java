@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.Button;
+import android.widget.ProgressBar;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,15 +16,33 @@ public class LoginActivity extends AppCompatActivity {
 
   private TextInputLayout textUsernameLayout;
   private TextInputEditText usernameInput;
+
+
   private TextInputLayout textPasswordLayout;
   private TextInputEditText passwordInput;
+
   private Button loginButton;
+
+  private ProgressBar loginProgressBar;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
 	super.onCreate(savedInstanceState);
 	setContentView(R.layout.activity_login);
 
+	findViewElements();
+
+	addFieldsListeners();
+  }
+
+  private void addFieldsListeners() {
+	usernameInput.addTextChangedListener(emptyInputTextWatcher(textUsernameLayout));
+	passwordInput.addTextChangedListener(emptyInputTextWatcher(textPasswordLayout));
+
+	loginButton.setOnClickListener(v -> onLoginClicked());
+  }
+
+  private void findViewElements() {
 	textUsernameLayout = findViewById(R.id.textUsernameLayout);
 	usernameInput = findViewById(R.id.usernameInput);
 
@@ -32,10 +51,7 @@ public class LoginActivity extends AppCompatActivity {
 
 	loginButton = findViewById(R.id.loginButton);
 
-	usernameInput.addTextChangedListener(emptyInputTextWatcher(textUsernameLayout));
-	passwordInput.addTextChangedListener(emptyInputTextWatcher(textPasswordLayout));
-
-	loginButton.setOnClickListener(v -> onLoginClicked());
+	loginProgressBar = findViewById(R.id.loginProgressBar);
   }
 
 
