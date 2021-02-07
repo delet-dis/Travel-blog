@@ -7,4 +7,5 @@
   <string name="loginFailedTitleAlertDialogError">Login failed</string>
   <string name="loginFailedMessageAlertDialogError">"Username or password is not correct. Please try again.</string>
   <string name="positiveOkText">OK</string>
+  <string name="mainImageDescription">Main image</string>
 </resources>
