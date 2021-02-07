@@ -29,9 +29,20 @@ public class LoginActivity extends AppCompatActivity {
 
   private ProgressBar loginProgressBar;
 
+  private BlogPreferences blogPreferences;
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
 	super.onCreate(savedInstanceState);
+
+	blogPreferences = new BlogPreferences(this);
+
+	if(blogPreferences.isLoggedIn()){
+	  startMainActivity();
+	  finish();
+	  return;
+	}
+
 	setContentView(R.layout.activity_login);
 
 	findViewElements();
@@ -112,11 +123,16 @@ public class LoginActivity extends AppCompatActivity {
   private void performLogin() {
 	disableLoginFields();
 
+	blogPreferences.setLoginState(true);
+
 	loginButton.setVisibility(View.INVISIBLE);
 	loginProgressBar.setVisibility(View.VISIBLE);
 
 	Handler handler = new Handler(Looper.getMainLooper());
-	handler.postDelayed(this::startMainActivity, 2000);
+	handler.postDelayed(() -> {
+	  startMainActivity();
+	  finish();
+	}, 2000);
   }
 
   private void startMainActivity() {
