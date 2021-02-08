@@ -39,7 +39,7 @@ public class LoginActivity extends AppCompatActivity {
 
 	blogPreferences = new BlogPreferences(this);
 
-	if(blogPreferences.isLoggedIn()){
+	if (blogPreferences.isLoggedIn()) {
 	  startMainActivity();
 	  finish();
 	  return;
