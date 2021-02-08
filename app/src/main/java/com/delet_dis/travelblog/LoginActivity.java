@@ -16,6 +16,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.util.Objects;
+
 public class LoginActivity extends AppCompatActivity {
 
   private TextInputLayout textUsernameLayout;
@@ -112,7 +114,7 @@ public class LoginActivity extends AppCompatActivity {
   }
 
   private boolean isLoginFieldsAreEmpty() {
-	return usernameInput.getText().toString().isEmpty() || passwordInput.getText().toString().isEmpty();
+	return Objects.requireNonNull(usernameInput.getText()).toString().isEmpty() || Objects.requireNonNull(passwordInput.getText()).toString().isEmpty();
   }
 
   private void disableLoginFields() {
