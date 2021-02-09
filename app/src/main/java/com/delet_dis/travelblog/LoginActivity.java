@@ -114,7 +114,8 @@ public class LoginActivity extends AppCompatActivity {
   }
 
   private boolean isLoginFieldsAreEmpty() {
-	return Objects.requireNonNull(usernameInput.getText()).toString().isEmpty() || Objects.requireNonNull(passwordInput.getText()).toString().isEmpty();
+	return Objects.requireNonNull(usernameInput.getText()).toString().isEmpty() ||
+			Objects.requireNonNull(passwordInput.getText()).toString().isEmpty();
   }
 
   private void disableLoginFields() {

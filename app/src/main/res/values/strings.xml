@@ -8,4 +8,12 @@
   <string name="loginFailedMessageAlertDialogError">"Username or password is not correct. Please try again.</string>
   <string name="positiveOkText">OK</string>
   <string name="mainImageDescription">Main image</string>
+  <string name="textDateText">August 2, 2019</string>
+  <string name="textTitleText">Day from Sydney</string>
+  <string name="imageAvatarDescription">User avatar</string>
+  <string name="textAuthorText">Grayson Wells</string>
+  <string name="textRatingText">4.4</string>
+  <string name="textViewsText">(2687 views)</string>
+  <string name="textDescriptionText">Australia is one of the most popular travel destinations in the world.</string>
+  <string name="imageBackDescription">Back arrow</string>
 </resources>
