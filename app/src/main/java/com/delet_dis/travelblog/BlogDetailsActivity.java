@@ -10,29 +10,28 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.delet_dis.travelblog.http.Blog;
+import com.delet_dis.travelblog.http.BlogHttpClient;
+
+import java.util.List;
+import java.util.Locale;
 
 public class BlogDetailsActivity extends AppCompatActivity {
 
-  ImageView imageMain;
-  ImageView imageAvatar;
-  ImageView imageBack;
+  private ImageView imageMain;
+  private ImageView imageAvatar;
+  private ImageView imageBack;
 
 
-  TextView textTitle;
-  TextView textDate;
-  TextView textRating;
-  TextView textViews;
-  TextView textDescription;
+  private TextView textTitle;
+  private TextView textDate;
+  private TextView textRating;
+  private TextView textViews;
+  private TextView textDescription;
+  private TextView textAuthor;
 
-  RatingBar ratingBar;
+  private RatingBar ratingBar;
 
-
-  public static final String IMAGE_URL =
-		  "https://bitbucket.org/dmytrodanylyk/travel-blog-resources/raw/" +
-				  "3436e16367c8ec2312a0644bebd2694d484eb047/images/sydney_image.jpg";
-  public static final String AVATAR_URL =
-		  "https://bitbucket.org/dmytrodanylyk/travel-blog-resources/raw/" +
-				  "3436e16367c8ec2312a0644bebd2694d484eb047/avatars/avatar1.jpg";
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -43,16 +42,7 @@ public class BlogDetailsActivity extends AppCompatActivity {
 
 	imageBack.setOnClickListener(v -> finish());
 
-	Glide.with(this)
-			.load(IMAGE_URL)
-			.transition(DrawableTransitionOptions.withCrossFade())
-			.into(imageMain);
-
-	Glide.with(this)
-			.load(AVATAR_URL)
-			.transform(new CircleCrop())
-			.transition(DrawableTransitionOptions.withCrossFade())
-			.into(imageAvatar);
+	loadData();
   }
 
   private void findViewElements() {
@@ -65,7 +55,42 @@ public class BlogDetailsActivity extends AppCompatActivity {
 	textRating = findViewById(R.id.textRating);
 	textViews = findViewById(R.id.textViews);
 	textDescription = findViewById(R.id.textDescription);
+	textAuthor = findViewById(R.id.textAuthor);
 
 	ratingBar = findViewById(R.id.ratingBar);
+  }
+
+  private void loadData() {
+	BlogHttpClient.INSTANCE.loadBlogArticles(new BlogHttpClient.BlogArticlesCallback() {
+	  @Override
+	  public void onSuccess(List<Blog> blogList) {
+		runOnUiThread(() -> showData(blogList.get(0)));
+	  }
+
+	  @Override
+	  public void onError() {
+	  }
+	});
+  }
+
+  private void showData(Blog blog) {
+	textTitle.setText(blog.getTitle());
+	textDate.setText(blog.getDate());
+	textAuthor.setText(blog.getAuthor().getName());
+	textRating.setText(String.valueOf(blog.getRating()));
+	textViews.setText(String.format(Locale.getDefault(), "(%d views)", blog.getViews()));
+	textDescription.setText(blog.getDescription());
+	ratingBar.setRating(blog.getRating());
+
+	Glide.with(this)
+			.load(blog.getImage())
+			.transition(DrawableTransitionOptions.withCrossFade())
+			.into(imageMain);
+
+	Glide.with(this)
+			.load(blog.getAuthor().getAvatar())
+			.transform(new CircleCrop())
+			.transition(DrawableTransitionOptions.withCrossFade())
+			.into(imageAvatar);
   }
 }
