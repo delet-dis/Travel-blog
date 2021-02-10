@@ -1,8 +1,10 @@
 package com.delet_dis.travelblog;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.text.HtmlCompat;
 
 import android.os.Bundle;
+import android.text.Html;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -86,7 +88,7 @@ public class BlogDetailsActivity extends AppCompatActivity {
 	textAuthor.setText(blog.getAuthor().getName());
 	textRating.setText(String.valueOf(blog.getRating()));
 	textViews.setText(String.format(Locale.getDefault(), "(%d views)", blog.getViews()));
-	textDescription.setText(blog.getDescription());
+	textDescription.setText(HtmlCompat.fromHtml(blog.getDescription(), HtmlCompat.FROM_HTML_MODE_COMPACT));
 	ratingBar.setRating(blog.getRating());
 
 	Glide.with(this)
