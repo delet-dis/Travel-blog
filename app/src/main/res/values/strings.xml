@@ -10,4 +10,6 @@
   <string name="mainImageDescription">Main image</string>
   <string name="imageAvatarDescription">User avatar</string>
   <string name="imageBackDescription">Back arrow</string>
+  <string name="snackbarLoadingError">Error during loading blog articles</string>
+  <string name="snackbarRetryText">Retry</string>
 </resources>

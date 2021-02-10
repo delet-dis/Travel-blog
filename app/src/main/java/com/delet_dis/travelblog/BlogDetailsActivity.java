@@ -3,7 +3,9 @@ package com.delet_dis.travelblog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -12,6 +14,7 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.delet_dis.travelblog.http.Blog;
 import com.delet_dis.travelblog.http.BlogHttpClient;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 import java.util.Locale;
@@ -22,7 +25,6 @@ public class BlogDetailsActivity extends AppCompatActivity {
   private ImageView imageAvatar;
   private ImageView imageBack;
 
-
   private TextView textTitle;
   private TextView textDate;
   private TextView textRating;
@@ -31,6 +33,8 @@ public class BlogDetailsActivity extends AppCompatActivity {
   private TextView textAuthor;
 
   private RatingBar ratingBar;
+
+  private ProgressBar progressBar;
 
 
   @Override
@@ -58,6 +62,8 @@ public class BlogDetailsActivity extends AppCompatActivity {
 	textAuthor = findViewById(R.id.textAuthor);
 
 	ratingBar = findViewById(R.id.ratingBar);
+
+	progressBar = findViewById(R.id.progressBar);
   }
 
   private void loadData() {
@@ -69,6 +75,7 @@ public class BlogDetailsActivity extends AppCompatActivity {
 
 	  @Override
 	  public void onError() {
+		runOnUiThread(() -> showErrorSnackbar());
 	  }
 	});
   }
@@ -92,5 +99,21 @@ public class BlogDetailsActivity extends AppCompatActivity {
 			.transform(new CircleCrop())
 			.transition(DrawableTransitionOptions.withCrossFade())
 			.into(imageAvatar);
+
+	progressBar.setVisibility(View.GONE);
+  }
+
+  private void showErrorSnackbar() {
+	View rootView = findViewById(android.R.id.content);
+
+	Snackbar snackbar = Snackbar.make(rootView,
+			R.string.snackbarLoadingError, Snackbar.LENGTH_INDEFINITE);
+	snackbar.setActionTextColor(getColor(R.color.orange500));
+	snackbar.setAction(R.string.snackbarRetryText, v -> {
+	  loadData();
+	  snackbar.dismiss();
+	});
+
+	snackbar.show();
   }
 }
