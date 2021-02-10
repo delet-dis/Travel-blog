@@ -9,6 +9,10 @@ public class Author {
 	return avatar;
   }
 
+  public String getAvatarURL() {
+	return BlogHttpClient.BASE_URL + BlogHttpClient.PATH + getAvatar();
+  }
+
   private String name;
   private String avatar;
 

@@ -17,10 +17,12 @@ import okhttp3.ResponseBody;
 public class BlogHttpClient {
   public static final BlogHttpClient INSTANCE = new BlogHttpClient();
 
-  private static final String BASE_URL =
+  public static final String BASE_URL =
 		  "https://raw.githubusercontent.com/delet-dis/travel-blog-resources/";
+  public static final String PATH =
+		  BASE_URL + "f0c07c507cd13c7243ac3e935c86e90f4767c0fe";
   private static final String BLOG_ARTICLES_URL =
-		  BASE_URL + "f0c07c507cd13c7243ac3e935c86e90f4767c0fe/blog_articles.json";
+		  BASE_URL + PATH + "/blog_articles.json";
 
   private final Executor executor;
   private final OkHttpClient client;
@@ -35,7 +37,7 @@ public class BlogHttpClient {
   public void loadBlogArticles(BlogArticlesCallback callback) {
 	Request request = new Request.Builder()
 			.get()
-			.url(BLOG_ARTICLES_URL)
+			.url(PATH)
 			.build();
 
 	executor.execute(() -> {

@@ -22,6 +22,10 @@ public class Blog {
 	return image;
   }
 
+  public String getImageURL() {
+	return BlogHttpClient.BASE_URL + BlogHttpClient.PATH + getImage();
+  }
+
   public String getDescription() {
 	return description;
   }
