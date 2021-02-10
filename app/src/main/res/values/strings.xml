@@ -12,6 +12,5 @@
   <string name="imageBackDescription">Back arrow</string>
   <string name="snackbarLoadingError">Error during loading blog articles</string>
   <string name="snackbarRetryText">Retry</string>
-  <string name="imageAvatarDescription">User avatar</string>
   <string name="materialToolbarTitle">Travel Blog</string>
 </resources>
