@@ -20,7 +20,7 @@ public class BlogHttpClient {
   public static final String BASE_URL =
 		  "https://raw.githubusercontent.com/delet-dis/travel-blog-resources/";
   public static final String PATH =
-		  BASE_URL + "f0c07c507cd13c7243ac3e935c86e90f4767c0fe";
+		  "67ccd879b3d9b8e2b8f5cca2ad0937abdb097a3b";
   private static final String BLOG_ARTICLES_URL =
 		  BASE_URL + PATH + "/blog_articles.json";
 
@@ -37,7 +37,7 @@ public class BlogHttpClient {
   public void loadBlogArticles(BlogArticlesCallback callback) {
 	Request request = new Request.Builder()
 			.get()
-			.url(PATH)
+			.url(BLOG_ARTICLES_URL)
 			.build();
 
 	executor.execute(() -> {
