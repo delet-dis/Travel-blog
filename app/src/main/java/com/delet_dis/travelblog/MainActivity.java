@@ -7,6 +7,7 @@ import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.delet_dis.travelblog.adapter.MainAdapter;
 import com.delet_dis.travelblog.http.Blog;
@@ -19,6 +20,8 @@ public class MainActivity extends AppCompatActivity {
 
   private MainAdapter mainAdapter;
 
+  private SwipeRefreshLayout refreshLayout;
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
 	super.onCreate(savedInstanceState);
@@ -30,16 +33,21 @@ public class MainActivity extends AppCompatActivity {
 	recyclerView.setLayoutManager(new LinearLayoutManager(this));
 	recyclerView.setAdapter(mainAdapter);
 
+	refreshLayout = findViewById(R.id.refreshLayout);
+	refreshLayout.setOnRefreshListener(this::loadData);
+
 	loadData();
 
   }
 
   private void loadData() {
+	refreshLayout.setRefreshing(true);
 	BlogHttpClient.INSTANCE.loadBlogArticles(new BlogHttpClient.BlogArticlesCallback() {
 	  @Override
 	  public void onSuccess(List<Blog> blogList) {
 		runOnUiThread(() -> {
 		  mainAdapter.submitList(blogList);
+		  refreshLayout.setRefreshing(false);
 		});
 	  }
 
@@ -47,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
 	  public void onError() {
 		runOnUiThread(() -> {
 		  showErrorSnackbar(getApplicationContext(), findViewById(android.R.id.content));
+		  refreshLayout.setRefreshing(false);
 //		  SnackbarHelper.showErrorSnackbar(getApplicationContext(), findViewById(android.R.id.content));
 		});
 	  }
