@@ -20,7 +20,7 @@ public class BlogHttpClient {
   public static final String BASE_URL =
 		  "https://raw.githubusercontent.com/delet-dis/travel-blog-resources/";
   public static final String PATH =
-		  "67ccd879b3d9b8e2b8f5cca2ad0937abdb097a3b";
+		  "113a748aed8a4c17b2b77788ae4ecdd1675f396b";
   private static final String BLOG_ARTICLES_URL =
 		  BASE_URL + PATH + "/blog_articles.json";
 

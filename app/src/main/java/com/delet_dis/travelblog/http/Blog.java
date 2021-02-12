@@ -7,14 +7,14 @@ import java.util.Objects;
 
 public class Blog implements Parcelable {
 
-  private String id;
+  private final String id;
   private Author author;
-  private String title;
-  private String date;
-  private String image;
-  private String description;
-  private int views;
-  private float rating;
+  private final String title;
+  private final String date;
+  private final String image;
+  private final String description;
+  private final int views;
+  private final float rating;
 
   protected Blog(Parcel in) {
 	id = in.readString();

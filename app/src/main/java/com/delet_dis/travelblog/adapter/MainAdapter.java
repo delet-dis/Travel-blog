@@ -23,7 +23,7 @@ public class MainAdapter extends ListAdapter<Blog, MainAdapter.MainViewHolder> {
 	void onItemClicked(Blog blog);
   }
 
-  private OnItemClickListener onItemClickListener;
+  private final OnItemClickListener onItemClickListener;
 
   public MainAdapter(OnItemClickListener clickListener) {
 	super(DIFF_CALLBACK);

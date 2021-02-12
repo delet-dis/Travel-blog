@@ -7,8 +7,8 @@ import java.util.Objects;
 
 public class Author implements Parcelable {
 
-  private String name;
-  private String avatar;
+  private final String name;
+  private final String avatar;
 
   protected Author(Parcel in) {
 	name = in.readString();
