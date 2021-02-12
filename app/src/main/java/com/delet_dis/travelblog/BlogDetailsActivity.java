@@ -1,8 +1,7 @@
 package com.delet_dis.travelblog;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.text.HtmlCompat;
-
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -10,78 +9,57 @@ import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.text.HtmlCompat;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.delet_dis.travelblog.helpers.ConstantsHelper;
 import com.delet_dis.travelblog.http.Blog;
-import com.delet_dis.travelblog.http.BlogHttpClient;
-import com.google.android.material.snackbar.Snackbar;
 
-import java.util.List;
 import java.util.Locale;
 
 public class BlogDetailsActivity extends AppCompatActivity {
 
-  private ImageView imageMain;
-  private ImageView imageAvatar;
-  private ImageView imageBack;
 
   private TextView textTitle;
   private TextView textDate;
-  private TextView textRating;
-  private TextView textViews;
-  private TextView textDescription;
   private TextView textAuthor;
-
+  private TextView textRating;
+  private TextView textDescription;
+  private TextView textViews;
   private RatingBar ratingBar;
-
+  private ImageView imageAvatar;
+  private ImageView imageMain;
   private ProgressBar progressBar;
 
-
   @Override
-  protected void onCreate(Bundle savedInstanceState) {
+  protected void onCreate(@Nullable Bundle savedInstanceState) {
 	super.onCreate(savedInstanceState);
 	setContentView(R.layout.activity_blog_details);
 
-	findViewElements();
-
-	imageBack.setOnClickListener(v -> finish());
-
-	loadData();
-  }
-
-  private void findViewElements() {
 	imageMain = findViewById(R.id.imageMain);
 	imageAvatar = findViewById(R.id.imageAvatar);
-	imageBack = findViewById(R.id.imageBack);
+
+	ImageView imageBack = findViewById(R.id.imageBack);
+	imageBack.setOnClickListener(v -> finish());
 
 	textTitle = findViewById(R.id.textTitle);
 	textDate = findViewById(R.id.textDate);
+	textAuthor = findViewById(R.id.textAuthor);
 	textRating = findViewById(R.id.textRating);
 	textViews = findViewById(R.id.textViews);
 	textDescription = findViewById(R.id.textDescription);
-	textAuthor = findViewById(R.id.textAuthor);
-
 	ratingBar = findViewById(R.id.ratingBar);
-
 	progressBar = findViewById(R.id.progressBar);
-  }
 
-  private void loadData() {
-	BlogHttpClient.INSTANCE.loadBlogArticles(new BlogHttpClient.BlogArticlesCallback() {
-	  @Override
-	  public void onSuccess(List<Blog> blogList) {
-		runOnUiThread(() -> showData(blogList.get(0)));
-	  }
-
-	  @Override
-	  public void onError() {
-		runOnUiThread(() -> showErrorSnackbar());
-	  }
-	});
+	showData(getIntent().getExtras().getParcelable(ConstantsHelper.EXTRAS_BLOG));
   }
 
   private void showData(Blog blog) {
+	progressBar.setVisibility(View.GONE);
 	textTitle.setText(blog.getTitle());
 	textDate.setText(blog.getDate());
 	textAuthor.setText(blog.getAuthor().getName());
@@ -89,32 +67,24 @@ public class BlogDetailsActivity extends AppCompatActivity {
 	textViews.setText(String.format(Locale.getDefault(), "(%d views)", blog.getViews()));
 	textDescription.setText(HtmlCompat.fromHtml(blog.getDescription(), HtmlCompat.FROM_HTML_MODE_COMPACT));
 	ratingBar.setRating(blog.getRating());
+	ratingBar.setVisibility(View.VISIBLE);
 
 	Glide.with(this)
-			.load(blog.getImage())
+			.load(blog.getImageURL())
 			.transition(DrawableTransitionOptions.withCrossFade())
 			.into(imageMain);
 
 	Glide.with(this)
-			.load(blog.getAuthor().getAvatar())
+			.load(blog.getAuthor().getAvatarURL())
 			.transform(new CircleCrop())
 			.transition(DrawableTransitionOptions.withCrossFade())
 			.into(imageAvatar);
-
-	progressBar.setVisibility(View.GONE);
   }
 
-  private void showErrorSnackbar() {
-	View rootView = findViewById(android.R.id.content);
-
-	Snackbar snackbar = Snackbar.make(rootView,
-			R.string.snackbarLoadingError, Snackbar.LENGTH_INDEFINITE);
-	snackbar.setActionTextColor(getColor(R.color.orange500));
-	snackbar.setAction(R.string.snackbarRetryText, v -> {
-	  loadData();
-	  snackbar.dismiss();
-	});
-
-	snackbar.show();
+  public static void startBlogDetailsActivity(Activity activity, Blog blog) {
+	Intent intent = new Intent(activity, BlogDetailsActivity.class);
+	intent.putExtra(ConstantsHelper.EXTRAS_BLOG, blog);
+	activity.startActivity(intent);
   }
+
 }

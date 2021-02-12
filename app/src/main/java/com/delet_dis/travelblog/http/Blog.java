@@ -1,16 +1,60 @@
 package com.delet_dis.travelblog.http;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.Objects;
 
-public class Blog {
+public class Blog implements Parcelable {
 
-  public String getId() {
-	return id;
+  private String id;
+  private Author author;
+  private String title;
+  private String date;
+  private String image;
+  private String description;
+  private int views;
+  private float rating;
+
+  protected Blog(Parcel in) {
+	id = in.readString();
+	title = in.readString();
+	date = in.readString();
+	image = in.readString();
+	description = in.readString();
+	views = in.readInt();
+	rating = in.readFloat();
+	author = in.readParcelable(Author.class.getClassLoader());
   }
 
-  public Author getAuthor() {
-	return author;
+  @Override
+  public void writeToParcel(Parcel dest, int flags) {
+	dest.writeString(id);
+	dest.writeString(title);
+	dest.writeString(date);
+	dest.writeString(image);
+	dest.writeString(description);
+	dest.writeInt(views);
+	dest.writeFloat(rating);
+	dest.writeParcelable(author, 0);
   }
+
+  @Override
+  public int describeContents() {
+	return 0;
+  }
+
+  public static final Creator<Blog> CREATOR = new Creator<Blog>() {
+	@Override
+	public Blog createFromParcel(Parcel in) {
+	  return new Blog(in);
+	}
+
+	@Override
+	public Blog[] newArray(int size) {
+	  return new Blog[size];
+	}
+  };
 
   public String getTitle() {
 	return title;
@@ -40,6 +84,18 @@ public class Blog {
 	return rating;
   }
 
+  public Author getAuthor() {
+	return author;
+  }
+
+  public void setAuthor(Author author) {
+	this.author = author;
+  }
+
+  public String getId() {
+	return id;
+  }
+
   @Override
   public boolean equals(Object o) {
 	if (this == o) return true;
@@ -59,13 +115,4 @@ public class Blog {
   public int hashCode() {
 	return Objects.hash(id, author, title, date, image, description, views, rating);
   }
-
-  private String id;
-  private Author author;
-  private String title;
-  private String date;
-  private String image;
-  private String description;
-  private int views;
-  private float rating;
 }
