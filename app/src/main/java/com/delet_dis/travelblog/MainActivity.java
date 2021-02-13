@@ -3,6 +3,9 @@ package com.delet_dis.travelblog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.SearchView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -34,6 +37,31 @@ public class MainActivity extends AppCompatActivity {
 	super.onCreate(savedInstanceState);
 	setContentView(R.layout.activity_main);
 
+	setupToolbarOnMenuItemClickListener();
+
+	setupRecyclerView();
+
+	setupRefreshLayout();
+
+	loadData();
+
+  }
+
+  private void setupRefreshLayout() {
+	refreshLayout = findViewById(R.id.refreshLayout);
+	refreshLayout.setOnRefreshListener(this::loadData);
+  }
+
+  private void setupRecyclerView() {
+	mainAdapter = new MainAdapter(blog ->
+			BlogDetailsActivity.startBlogDetailsActivity(this, blog));
+
+	RecyclerView recyclerView = findViewById(R.id.recyclerView);
+	recyclerView.setLayoutManager(new LinearLayoutManager(this));
+	recyclerView.setAdapter(mainAdapter);
+  }
+
+  private void setupToolbarOnMenuItemClickListener() {
 	MaterialToolbar toolbar = findViewById(R.id.toolbar);
 	toolbar.setOnMenuItemClickListener(item -> {
 	  if (item.getItemId() == R.id.sort) {
@@ -41,19 +69,6 @@ public class MainActivity extends AppCompatActivity {
 	  }
 	  return false;
 	});
-
-	mainAdapter = new MainAdapter(blog ->
-			BlogDetailsActivity.startBlogDetailsActivity(this, blog));
-
-	RecyclerView recyclerView = findViewById(R.id.recyclerView);
-	recyclerView.setLayoutManager(new LinearLayoutManager(this));
-	recyclerView.setAdapter(mainAdapter);
-
-	refreshLayout = findViewById(R.id.refreshLayout);
-	refreshLayout.setOnRefreshListener(this::loadData);
-
-	loadData();
-
   }
 
   private void onSortClicked() {
@@ -91,7 +106,6 @@ public class MainActivity extends AppCompatActivity {
 		runOnUiThread(() -> {
 		  showErrorSnackbar(getApplicationContext(), findViewById(android.R.id.content));
 		  refreshLayout.setRefreshing(false);
-//		  SnackbarHelper.showErrorSnackbar(getApplicationContext(), findViewById(android.R.id.content));
 		});
 	  }
 	});
@@ -106,12 +120,6 @@ public class MainActivity extends AppCompatActivity {
 	});
 	snackbar.show();
   }
-
-//  public static class SnackbarCallback implements SnackbarHelper.Callback {
-//	@Override
-//	public void reloadData() {
-//	  loadData();
-//	}
-//  }
+  
 }
 

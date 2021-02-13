@@ -2,8 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto">
   <item
+          android:id="@+id/search"
+          android:icon="@drawable/ic_search_white_24dp"
+          android:title="@string/searchTitle"
+          app:actionViewClass="android.widget.SearchView"
+          app:showAsAction="always" />
+  <item
           android:id="@+id/sort"
           android:title="@string/menuSortTitle"
           android:icon="@drawable/ic_baseline_sort_24"
-          app:showAsAction="always" />
+          app:showAsAction="ifRoom" />
 </menu>

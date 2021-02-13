@@ -37,22 +37,25 @@ public class LoginActivity extends AppCompatActivity {
   protected void onCreate(Bundle savedInstanceState) {
 	super.onCreate(savedInstanceState);
 
-	blogPreferences = new BlogPreferences(this);
-
-	if (blogPreferences.isLoggedIn()) {
-	  startMainActivity();
-	  finish();
-	  return;
-	}
+	isLoggedCheck();
 
 	setContentView(R.layout.activity_login);
 
 	findViewElements();
 
-	addFieldsListeners();
+	setupLoginFieldsListeners();
   }
 
-  private void addFieldsListeners() {
+  private void isLoggedCheck() {
+	blogPreferences = new BlogPreferences(this);
+
+	if (blogPreferences.isLoggedIn()) {
+	  startMainActivity();
+	  finish();
+	}
+  }
+
+  private void setupLoginFieldsListeners() {
 	usernameInput.addTextChangedListener(emptyInputTextWatcher(textUsernameLayout));
 	passwordInput.addTextChangedListener(emptyInputTextWatcher(textPasswordLayout));
 

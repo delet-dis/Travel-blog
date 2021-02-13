@@ -14,4 +14,5 @@
   <string name="snackbarRetryText">Retry</string>
   <string name="materialToolbarTitle">Travel Blog</string>
   <string name="menuSortTitle">Sort</string>
+  <string name="searchTitle">Search</string>
 </resources>

@@ -19,9 +19,9 @@
             android:layout_height="wrap_content"
             app:title="@string/materialToolbarTitle"
             app:titleTextColor="@android:color/white"
-            style="@style/ThemeOverlay.MaterialComponents.Toolbar.Primary"
             app:menu="@menu/main_menu"
-            android:id="@+id/toolbar" />
+            android:id="@+id/toolbar"
+            style="@style/Widget.MaterialComponents.Toolbar.Primary" />
 
   </com.google.android.material.appbar.AppBarLayout>
 
