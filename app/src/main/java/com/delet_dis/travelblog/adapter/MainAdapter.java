@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
@@ -74,6 +75,8 @@ public class MainAdapter extends ListAdapter<Blog, MainAdapter.MainViewHolder> {
 									  @NonNull Blog newData) {
 	  return oldData.equals(newData);
 	}
+
+
   };
 
   static class MainViewHolder extends RecyclerView.ViewHolder {
@@ -107,5 +110,22 @@ public class MainAdapter extends ListAdapter<Blog, MainAdapter.MainViewHolder> {
 			  .into(imageAvatar);
 	}
 
+  }
+
+  private List<Blog> originalList = new ArrayList<>();
+
+  public void setData(@Nullable List<Blog> list) {
+	originalList = list;
+	super.submitList(list);
+  }
+
+  public void filter(String query) {
+	List<Blog> filteredList = new ArrayList<>();
+	for (Blog blog : originalList) {
+	  if (blog.getTitle().toLowerCase().contains(query.toLowerCase())) {
+		filteredList.add(blog);
+	  }
+	}
+	submitList(filteredList);
   }
 }

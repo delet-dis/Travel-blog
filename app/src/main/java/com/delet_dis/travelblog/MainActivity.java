@@ -2,7 +2,9 @@ package com.delet_dis.travelblog;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.SearchView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -29,12 +31,18 @@ public class MainActivity extends AppCompatActivity {
 
   private SwipeRefreshLayout refreshLayout;
 
+  private MaterialToolbar toolbar;
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
 	super.onCreate(savedInstanceState);
 	setContentView(R.layout.activity_main);
 
+	toolbar = findViewById(R.id.toolbar);
+
 	setupToolbarOnMenuItemClickListener();
+
+	setupToolbarSearch();
 
 	setupRecyclerView();
 
@@ -59,12 +67,28 @@ public class MainActivity extends AppCompatActivity {
   }
 
   private void setupToolbarOnMenuItemClickListener() {
-	MaterialToolbar toolbar = findViewById(R.id.toolbar);
 	toolbar.setOnMenuItemClickListener(item -> {
 	  if (item.getItemId() == R.id.sort) {
 		onSortClicked();
 	  }
 	  return false;
+	});
+  }
+
+  private void setupToolbarSearch() {
+	MenuItem searchItem = toolbar.getMenu().findItem(R.id.search);
+	SearchView searchView = (SearchView) searchItem.getActionView();
+	searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+	  @Override
+	  public boolean onQueryTextSubmit(String query) {
+		return false;
+	  }
+
+	  @Override
+	  public boolean onQueryTextChange(String newText) {
+		mainAdapter.filter(newText);
+		return true;
+	  }
 	});
   }
 
@@ -93,8 +117,9 @@ public class MainActivity extends AppCompatActivity {
 	  @Override
 	  public void onSuccess(List<Blog> blogList) {
 		runOnUiThread(() -> {
-		  mainAdapter.submitList(blogList);
+		  mainAdapter.setData(blogList);
 		  refreshLayout.setRefreshing(false);
+		  sortData();
 		});
 	  }
 
