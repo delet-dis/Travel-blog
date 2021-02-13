@@ -13,6 +13,7 @@ import android.widget.ProgressBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.delet_dis.travelblog.helpers.BlogPreferencesHelper;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -31,7 +32,7 @@ public class LoginActivity extends AppCompatActivity {
 
   private ProgressBar loginProgressBar;
 
-  private BlogPreferences blogPreferences;
+  private BlogPreferencesHelper blogPreferences;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +48,7 @@ public class LoginActivity extends AppCompatActivity {
   }
 
   private void isLoggedCheck() {
-	blogPreferences = new BlogPreferences(this);
+	blogPreferences = new BlogPreferencesHelper(this);
 
 	if (blogPreferences.isLoggedIn()) {
 	  startMainActivity();

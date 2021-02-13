@@ -20,9 +20,6 @@ public class Blog implements Parcelable {
   private final int views;
   private final float rating;
 
-  private static final SimpleDateFormat dateFormat =
-		  new SimpleDateFormat("MMMM dd, yyyy", Locale.US);
-
   protected Blog(Parcel in) {
 	id = in.readString();
 	title = in.readString();
@@ -51,17 +48,6 @@ public class Blog implements Parcelable {
 	return 0;
   }
 
-  public static final Creator<Blog> CREATOR = new Creator<Blog>() {
-	@Override
-	public Blog createFromParcel(Parcel in) {
-	  return new Blog(in);
-	}
-
-	@Override
-	public Blog[] newArray(int size) {
-	  return new Blog[size];
-	}
-  };
 
   public String getTitle() {
 	return title;
@@ -69,17 +55,6 @@ public class Blog implements Parcelable {
 
   public String getDate() {
 	return date;
-  }
-
-  public Long getDateMillis() {
-	try {
-	  Date date = dateFormat.parse(getDate());
-	  return date != null ? date.getTime() : null;
-	} catch (ParseException e) {
-	  e.printStackTrace();
-	}
-
-	return null;
   }
 
   public String getImage() {
@@ -109,6 +84,32 @@ public class Blog implements Parcelable {
   public String getId() {
 	return id;
   }
+
+
+  private static final SimpleDateFormat dateFormat =
+		  new SimpleDateFormat("MMMM dd, yyyy", Locale.US);
+  public Long getDateMillis() {
+	try {
+	  Date date = dateFormat.parse(getDate());
+	  return date != null ? date.getTime() : null;
+	} catch (ParseException e) {
+	  e.printStackTrace();
+	}
+
+	return null;
+  }
+
+  public static final Creator<Blog> CREATOR = new Creator<Blog>() {
+	@Override
+	public Blog createFromParcel(Parcel in) {
+	  return new Blog(in);
+	}
+
+	@Override
+	public Blog[] newArray(int size) {
+	  return new Blog[size];
+	}
+  };
 
   @Override
   public boolean equals(Object o) {

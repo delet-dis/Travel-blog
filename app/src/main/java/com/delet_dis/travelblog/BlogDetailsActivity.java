@@ -2,8 +2,6 @@ package com.delet_dis.travelblog;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -44,16 +42,23 @@ public class BlogDetailsActivity extends AppCompatActivity {
 	super.onCreate(savedInstanceState);
 	setContentView(R.layout.activity_blog_details);
 
-	Window window = getWindow();
-	window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-	window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
-			View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+	setWindowTransparency();
 
-	imageMain = findViewById(R.id.imageMain);
-	imageAvatar = findViewById(R.id.imageAvatar);
+	findViewElements();
 
+	setImageBackOnClickListener();
+
+	showData(getIntent().getExtras().getParcelable(ConstantsHelper.EXTRAS_BLOG));
+  }
+
+  private void setImageBackOnClickListener() {
 	ImageView imageBack = findViewById(R.id.imageBack);
 	imageBack.setOnClickListener(v -> finish());
+  }
+
+  private void findViewElements() {
+	imageMain = findViewById(R.id.imageMain);
+	imageAvatar = findViewById(R.id.imageAvatar);
 
 	textTitle = findViewById(R.id.textTitle);
 	textDate = findViewById(R.id.textDate);
@@ -63,8 +68,13 @@ public class BlogDetailsActivity extends AppCompatActivity {
 	textDescription = findViewById(R.id.textDescription);
 	ratingBar = findViewById(R.id.ratingBar);
 	progressBar = findViewById(R.id.progressBar);
+  }
 
-	showData(getIntent().getExtras().getParcelable(ConstantsHelper.EXTRAS_BLOG));
+  private void setWindowTransparency() {
+	Window window = getWindow();
+	window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+	window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
+			View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
   }
 
   private void showData(Blog blog) {

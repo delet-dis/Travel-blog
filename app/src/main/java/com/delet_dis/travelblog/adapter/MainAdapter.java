@@ -18,10 +18,23 @@ import com.delet_dis.travelblog.R;
 import com.delet_dis.travelblog.http.Blog;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class MainAdapter extends ListAdapter<Blog, MainAdapter.MainViewHolder> {
+
+  @NonNull
+  @Override
+  public MainViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+	LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+	View view = inflater.inflate(R.layout.item_main, parent, false);
+
+	return new MainViewHolder(view, onItemClickListener);
+  }
+
+  @Override
+  public void onBindViewHolder(MainViewHolder holder, int position) {
+	holder.bindTo(getItem(position));
+  }
 
   public interface OnItemClickListener {
 	void onItemClicked(Blog blog);
@@ -38,28 +51,30 @@ public class MainAdapter extends ListAdapter<Blog, MainAdapter.MainViewHolder> {
   public void sortByTitle() {
 	List<Blog> currentList = new ArrayList<>(getCurrentList());
 	currentList.sort((o1, o2) -> o1.getTitle().compareTo(o2.getTitle()));
+
 	submitList(currentList);
   }
 
   public void sortByDate() {
 	List<Blog> currentList = new ArrayList<>(getCurrentList());
 	currentList.sort((o1, o2) -> o2.getDateMillis().compareTo(o1.getDateMillis()));
+
 	submitList(currentList);
   }
 
-  @NonNull
-  @Override
-  public MainViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-	LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-	View view = inflater.inflate(R.layout.item_main, parent, false);
+  private static final DiffUtil.ItemCallback<Blog> DIFF_CALLBACK = new DiffUtil.ItemCallback<Blog>() {
+	@Override
+	public boolean areItemsTheSame(@NonNull Blog oldData,
+								   @NonNull Blog newData) {
+	  return oldData.getId().equals(newData.getId());
+	}
 
-	return new MainViewHolder(view, onItemClickListener);
-  }
-
-  @Override
-  public void onBindViewHolder(MainViewHolder holder, int position) {
-	holder.bindTo(getItem(position));
-  }
+	@Override
+	public boolean areContentsTheSame(@NonNull Blog oldData,
+									  @NonNull Blog newData) {
+	  return oldData.equals(newData);
+	}
+  };
 
   static class MainViewHolder extends RecyclerView.ViewHolder {
 	private final TextView textTitle;
@@ -68,6 +83,7 @@ public class MainAdapter extends ListAdapter<Blog, MainAdapter.MainViewHolder> {
 	private final ImageView imageAvatar;
 
 	private Blog blog;
+
 
 	MainViewHolder(@NonNull View itemView, OnItemClickListener onItemClickListener) {
 	  super(itemView);
@@ -90,19 +106,6 @@ public class MainAdapter extends ListAdapter<Blog, MainAdapter.MainViewHolder> {
 			  .transition(DrawableTransitionOptions.withCrossFade())
 			  .into(imageAvatar);
 	}
+
   }
-
-  private static final DiffUtil.ItemCallback<Blog> DIFF_CALLBACK = new DiffUtil.ItemCallback<Blog>() {
-	@Override
-	public boolean areItemsTheSame(@NonNull Blog oldData,
-								   @NonNull Blog newData) {
-	  return oldData.getId().equals(newData.getId());
-	}
-
-	@Override
-	public boolean areContentsTheSame(@NonNull Blog oldData,
-									  @NonNull Blog newData) {
-	  return oldData.equals(newData);
-	}
-  };
 }

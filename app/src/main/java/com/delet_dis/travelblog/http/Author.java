@@ -16,14 +16,20 @@ public class Author implements Parcelable {
   }
 
   @Override
-  public void writeToParcel(Parcel dest, int flags) {
-	dest.writeString(name);
-	dest.writeString(avatar);
-  }
-
-  @Override
   public int describeContents() {
 	return 0;
+  }
+
+  public String getName() {
+	return name;
+  }
+
+  public String getAvatar() {
+	return avatar;
+  }
+
+  public String getAvatarURL() {
+	return BlogHttpClient.BASE_URL + BlogHttpClient.PATH + getAvatar();
   }
 
   public static final Creator<Author> CREATOR = new Creator<Author>() {
@@ -38,16 +44,9 @@ public class Author implements Parcelable {
 	}
   };
 
-  public String getName() {
-	return name;
-  }
-
-  public String getAvatar() {
-	return avatar;
-  }
-
-  public String getAvatarURL() {
-	return BlogHttpClient.BASE_URL + BlogHttpClient.PATH + getAvatar();
+  @Override
+  public int hashCode() {
+	return Objects.hash(name, avatar);
   }
 
   @Override
@@ -60,7 +59,8 @@ public class Author implements Parcelable {
   }
 
   @Override
-  public int hashCode() {
-	return Objects.hash(name, avatar);
+  public void writeToParcel(Parcel dest, int flags) {
+	dest.writeString(name);
+	dest.writeString(avatar);
   }
 }

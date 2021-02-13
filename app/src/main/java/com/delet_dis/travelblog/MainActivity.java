@@ -3,9 +3,6 @@ package com.delet_dis.travelblog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.SearchView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -120,6 +117,6 @@ public class MainActivity extends AppCompatActivity {
 	});
 	snackbar.show();
   }
-  
+
 }
 

@@ -1,14 +1,14 @@
-package com.delet_dis.travelblog;
+package com.delet_dis.travelblog.helpers;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 
-public class BlogPreferences {
+public class BlogPreferencesHelper {
   public static final String KEY_LOGIN_STATE = "key_login_state";
 
   private final SharedPreferences preferences;
 
-  BlogPreferences(Context context) {
+  public BlogPreferencesHelper(Context context) {
 	preferences =
 			context.getSharedPreferences("travel-blog", Context.MODE_PRIVATE);
   }
