@@ -3,18 +3,25 @@ package com.delet_dis.travelblog.http;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
 
 public class Blog implements Parcelable {
 
   private final String id;
-  private Author author;
+  private final Author author;
   private final String title;
   private final String date;
   private final String image;
   private final String description;
   private final int views;
   private final float rating;
+
+  private static final SimpleDateFormat dateFormat =
+		  new SimpleDateFormat("MMMM dd, yyyy", Locale.US);
 
   protected Blog(Parcel in) {
 	id = in.readString();
@@ -64,6 +71,17 @@ public class Blog implements Parcelable {
 	return date;
   }
 
+  public Long getDateMillis() {
+	try {
+	  Date date = dateFormat.parse(getDate());
+	  return date != null ? date.getTime() : null;
+	} catch (ParseException e) {
+	  e.printStackTrace();
+	}
+
+	return null;
+  }
+
   public String getImage() {
 	return image;
   }
@@ -86,10 +104,6 @@ public class Blog implements Parcelable {
 
   public Author getAuthor() {
 	return author;
-  }
-
-  public void setAuthor(Author author) {
-	this.author = author;
   }
 
   public String getId() {

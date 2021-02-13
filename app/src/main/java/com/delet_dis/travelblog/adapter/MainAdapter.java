@@ -17,6 +17,10 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.delet_dis.travelblog.R;
 import com.delet_dis.travelblog.http.Blog;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class MainAdapter extends ListAdapter<Blog, MainAdapter.MainViewHolder> {
 
   public interface OnItemClickListener {
@@ -31,6 +35,17 @@ public class MainAdapter extends ListAdapter<Blog, MainAdapter.MainViewHolder> {
 	this.onItemClickListener = clickListener;
   }
 
+  public void sortByTitle() {
+	List<Blog> currentList = new ArrayList<>(getCurrentList());
+	currentList.sort((o1, o2) -> o1.getTitle().compareTo(o2.getTitle()));
+	submitList(currentList);
+  }
+
+  public void sortByDate() {
+	List<Blog> currentList = new ArrayList<>(getCurrentList());
+	currentList.sort((o1, o2) -> o2.getDateMillis().compareTo(o1.getDateMillis()));
+	submitList(currentList);
+  }
 
   @NonNull
   @Override
