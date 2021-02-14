@@ -13,9 +13,9 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 public class BlogRepository {
-  private BlogHttpClient httpClient;
-  private AppDatabase database;
-  private Executor executor;
+  private final BlogHttpClient httpClient;
+  private final AppDatabase database;
+  private final Executor executor;
 
   public BlogRepository(Context context) {
 	httpClient = BlogHttpClient.INSTANCE;

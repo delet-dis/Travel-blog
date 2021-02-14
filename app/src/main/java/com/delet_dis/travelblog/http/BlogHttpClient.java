@@ -24,12 +24,10 @@ public class BlogHttpClient {
   private static final String BLOG_ARTICLES_URL =
 		  BASE_URL + PATH + "/blog_articles.json";
 
-  private final Executor executor;
   private final OkHttpClient client;
   private final Gson gson;
 
   private BlogHttpClient() {
-	executor = Executors.newFixedThreadPool(4);
 	client = new OkHttpClient();
 	gson = new Gson();
   }
@@ -54,11 +52,5 @@ public class BlogHttpClient {
 	  Log.e("BlogHttpClient", "Error loading blog articles", e);
 	}
 	return null;
-  }
-
-  public interface BlogArticlesCallback {
-	void onSuccess(List<Blog> blogList);
-
-	void onError();
   }
 }

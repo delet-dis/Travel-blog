@@ -42,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
 
 	toolbar = findViewById(R.id.toolbar);
 
+	repository = new BlogRepository(getApplicationContext());
+
 	setupToolbarOnMenuItemClickListener();
 
 	setupToolbarSearch();
@@ -52,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
 
 	loadDataFromDatabase();
 	loadDataFromNetwork();
+
+	sortData();
   }
 
   private void setupRefreshLayout() {
@@ -109,7 +113,6 @@ public class MainActivity extends AppCompatActivity {
 	  public void onSuccess(List<Blog> blogList) {
 		runOnUiThread(() -> {
 		  mainAdapter.setData(blogList);
-		  sortData();
 		  refreshLayout.setRefreshing(false);
 		});
 	  }
