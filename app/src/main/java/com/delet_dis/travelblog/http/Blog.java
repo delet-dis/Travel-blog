@@ -3,15 +3,21 @@ package com.delet_dis.travelblog.http;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.room.Embedded;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 
+@Entity
 public class Blog implements Parcelable {
-
-  private final String id;
+  @PrimaryKey
+  private final int id;
+  @Embedded
   private final Author author;
   private final String title;
   private final String date;
@@ -21,7 +27,7 @@ public class Blog implements Parcelable {
   private final float rating;
 
   protected Blog(Parcel in) {
-	id = in.readString();
+	id = in.readInt();
 	title = in.readString();
 	date = in.readString();
 	image = in.readString();
@@ -31,9 +37,21 @@ public class Blog implements Parcelable {
 	author = in.readParcelable(Author.class.getClassLoader());
   }
 
+  public Blog(int id, Author author, String title, String date, String image,
+			  String description, int views, float rating) { // 4
+	this.id = id;
+	this.author = author;
+	this.title = title;
+	this.date = date;
+	this.image = image;
+	this.description = description;
+	this.views = views;
+	this.rating = rating;
+  }
+
   @Override
   public void writeToParcel(Parcel dest, int flags) {
-	dest.writeString(id);
+	dest.writeInt(id);
 	dest.writeString(title);
 	dest.writeString(date);
 	dest.writeString(image);
@@ -81,13 +99,14 @@ public class Blog implements Parcelable {
 	return author;
   }
 
-  public String getId() {
+  public int getId() {
 	return id;
   }
 
 
   private static final SimpleDateFormat dateFormat =
 		  new SimpleDateFormat("MMMM dd, yyyy", Locale.US);
+
   public Long getDateMillis() {
 	try {
 	  Date date = dateFormat.parse(getDate());

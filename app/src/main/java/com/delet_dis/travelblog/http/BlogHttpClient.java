@@ -34,29 +34,26 @@ public class BlogHttpClient {
 	gson = new Gson();
   }
 
-  public void loadBlogArticles(BlogArticlesCallback callback) {
+  public List<Blog> loadBlogArticles() {
 	Request request = new Request.Builder()
 			.get()
 			.url(BLOG_ARTICLES_URL)
 			.build();
 
-	executor.execute(() -> {
-	  try {
-		Response response = client.newCall(request).execute();
-		ResponseBody responseBody = response.body();
-		if (responseBody != null) {
-		  String json = responseBody.string();
-		  BlogData blogData = gson.fromJson(json, BlogData.class);
-		  if (blogData != null) {
-			callback.onSuccess(blogData.getData());
-			return;
-		  }
+	try {
+	  Response response = client.newCall(request).execute();
+	  ResponseBody responseBody = response.body();
+	  if (responseBody != null) {
+		String json = responseBody.string();
+		BlogData blogData = gson.fromJson(json, BlogData.class);
+		if (blogData != null) {
+		  return blogData.getData();
 		}
-	  } catch (IOException e) {
-		Log.e("BlogHttpClient", "Error loading blog articles", e);
 	  }
-	  callback.onError();
-	});
+	} catch (IOException e) {
+	  Log.e("BlogHttpClient", "Error loading blog articles", e);
+	}
+	return null;
   }
 
   public interface BlogArticlesCallback {

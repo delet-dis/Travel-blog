@@ -13,7 +13,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.delet_dis.travelblog.adapter.MainAdapter;
 import com.delet_dis.travelblog.http.Blog;
-import com.delet_dis.travelblog.http.BlogHttpClient;
+import com.delet_dis.travelblog.repository.BlogRepository;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
@@ -33,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
 
   private MaterialToolbar toolbar;
 
+  private BlogRepository repository;
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
 	super.onCreate(savedInstanceState);
@@ -48,13 +50,13 @@ public class MainActivity extends AppCompatActivity {
 
 	setupRefreshLayout();
 
-	loadData();
-
+	loadDataFromDatabase();
+	loadDataFromNetwork();
   }
 
   private void setupRefreshLayout() {
 	refreshLayout = findViewById(R.id.refreshLayout);
-	refreshLayout.setOnRefreshListener(this::loadData);
+	refreshLayout.setOnRefreshListener(this::loadDataFromNetwork);
   }
 
   private void setupRecyclerView() {
@@ -92,6 +94,36 @@ public class MainActivity extends AppCompatActivity {
 	});
   }
 
+  private void loadDataFromDatabase() {
+	repository.loadDataFromDatabase(blogList -> runOnUiThread(() -> {
+	  mainAdapter.setData(blogList);
+	  sortData();
+	}));
+  }
+
+  private void loadDataFromNetwork() {
+	refreshLayout.setRefreshing(true);
+
+	repository.loadDataFromNetwork(new BlogRepository.DataFromNetworkCallback() {
+	  @Override
+	  public void onSuccess(List<Blog> blogList) {
+		runOnUiThread(() -> {
+		  mainAdapter.setData(blogList);
+		  sortData();
+		  refreshLayout.setRefreshing(false);
+		});
+	  }
+
+	  @Override
+	  public void onError() {
+		runOnUiThread(() -> {
+		  refreshLayout.setRefreshing(false);
+		  showErrorSnackbar(getApplicationContext(), findViewById(android.R.id.content));
+		});
+	  }
+	});
+  }
+
   private void onSortClicked() {
 	String[] items = {"Title", "Date"};
 	new MaterialAlertDialogBuilder(this)
@@ -111,33 +143,12 @@ public class MainActivity extends AppCompatActivity {
 	}
   }
 
-  private void loadData() {
-	refreshLayout.setRefreshing(true);
-	BlogHttpClient.INSTANCE.loadBlogArticles(new BlogHttpClient.BlogArticlesCallback() {
-	  @Override
-	  public void onSuccess(List<Blog> blogList) {
-		runOnUiThread(() -> {
-		  mainAdapter.setData(blogList);
-		  refreshLayout.setRefreshing(false);
-		  sortData();
-		});
-	  }
-
-	  @Override
-	  public void onError() {
-		runOnUiThread(() -> {
-		  showErrorSnackbar(getApplicationContext(), findViewById(android.R.id.content));
-		  refreshLayout.setRefreshing(false);
-		});
-	  }
-	});
-  }
 
   private void showErrorSnackbar(Context context, View rootView) {
 	Snackbar snackbar = Snackbar.make(rootView, R.string.snackbarLoadingError, Snackbar.LENGTH_INDEFINITE);
 	snackbar.setActionTextColor(context.getColor(R.color.orange500));
 	snackbar.setAction(R.string.snackbarRetryText, v -> {
-	  loadData();
+	  loadDataFromNetwork();
 	  snackbar.dismiss();
 	});
 	snackbar.show();

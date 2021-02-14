@@ -67,7 +67,7 @@ public class MainAdapter extends ListAdapter<Blog, MainAdapter.MainViewHolder> {
 	@Override
 	public boolean areItemsTheSame(@NonNull Blog oldData,
 								   @NonNull Blog newData) {
-	  return oldData.getId().equals(newData.getId());
+	  return oldData.getId() == newData.getId();
 	}
 
 	@Override
